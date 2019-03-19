@@ -1,0 +1,4 @@
+Edit the code to do the following tasks:
+1. Add more ships
+2. Change the sixe of the ships
+3. Make it a 2-player game
