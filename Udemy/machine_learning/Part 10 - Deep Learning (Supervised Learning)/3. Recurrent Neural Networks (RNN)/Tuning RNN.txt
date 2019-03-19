@@ -1,0 +1,11 @@
+Remember, this time we are dealing with a Regression problem because we predict a continuous outcome (the Google Stock Price).
+
+Parameter Tuning for Regression is the same as Parameter Tuning for Classification which you learned in Part 1 - Artificial Neural Networks, the only difference is that you have to replace:
+
+scoring = 'accuracy'  
+
+by:
+
+scoring = 'neg_mean_squared_error' 
+
+in the GridSearchCV class parameters.
