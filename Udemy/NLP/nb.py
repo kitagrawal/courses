@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 30 12:51:19 2019
+
+@author: ankit
+"""
+
+from sklearn.naive_bayes import MultinomialNB
+import pandas as pd
+import numpy as np
+
+data = pd.read_csv('spambase.data').as_matrix()
+np.random.shuffle(data)
+
+
+X = data[:,:48]
+y = data[:,-1]
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+model = MultinomialNB()
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
+print('Classification rate for NB: ',model.score(X_test,y_test))
+
+from sklearn.ensemble import AdaBoostClassifier
+
+model = AdaBoostClassifier()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print('Classification rate for AdaBoost: ',model.score(X_test,y_test))
