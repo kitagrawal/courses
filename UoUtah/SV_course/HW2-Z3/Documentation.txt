@@ -1,0 +1,11 @@
+the format to run the code
+python source_code.py <input_file> <output_file>
+
+Implementation:
+Step1: Create a linear parameter array (list) and initializing each parameter to have values between [1,n]
+Step2: Map the puzzle matrix co-ordinates into the linear parameter system
+Step3: Create the various constraints (+, -, *, /, g)
+Step4: Create the final conditions with adding them as queries to the solver (==)
+Step5: Run z3 and generate model
+Step5: Map the resultant model into the matrix co-ordinates and write to the output file
+Data structure used primarily: python lists

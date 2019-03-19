@@ -1,0 +1,61 @@
+import sys, os, time, re, glob2
+from subprocess import Popen, PIPE, check_output, CalledProcessError
+from multiprocessing import Pool
+
+
+import bplFiles
+from labelling import create, merge, generate
+from parser import features
+
+if __name__ == "__main__":
+	benchtype = 'tav'
+	'''
+	#----main Dec----
+
+	cmdBPL = ['/mnt/local/smack-project/smack/bin/smack', '-x=svcomp','--time-limit','3', '--verifier-options', '/di']
+	cmd = ['/mnt/local/smack-project/smack/bin/smack', '-x=svcomp','--verifier=svcomp', '--clang-options=-m64']
+	benchPath = '/proj/SMACK/sv-benchmarks/**'
+
+	tunr = glob2.glob(benchPath + '/*true-unreach*.c')
+	funr = glob2.glob(benchPath + '/*false-unreach*.c')
+	unr = tunr + funr
+
+	#----Generating .bpl files----
+	a1 = bplfiles(cmdBPL,unr)
+	pool = Pool(10)
+	pool.map(running,range(10))
+	'''
+	#----Generating Features----
+	bplPath = '/home/backupldv/SV_course/Project/source_code/setup/output/bpl'
+	bplFiles = glob2.glob(bplPath + '/*.bpl')
+	print len(bplFiles)
+	filename = benchtype + 'Feature.txt'
+	
+	c1 = features(bplFiles,filename)
+	c1.extract()
+	
+	features = c1.create()
+	print features
+	'''
+	#----Generating labels----
+	c1 = generate(cmd,unr)
+	pool1 = Pool(10)
+	pool2.map(c1.running, range(10))
+	'''
+	#----Finalizing Labels----
+
+	pathname = '/home/backupldv/SV_course/Project/source_code/setup/output/'
+	filesNTAV = glob2.glob(pathname+'n'+benchtype+'*.txt')
+	filesTAV = glob2.glob(pathname+benchtype+'*.txt')
+
+	v1 = create(filesNTAV,'N'+benchtype+'.txt',pathname)
+	v2 = create(filesTAV,benchtype+'.txt',pathname)
+	dict1 = v1.mergingFiles(0)	#contains [<benchtype> = 0, status]
+	dict2 = v2.mergingFiles(1)	#contains [<benchtype> = 1, status]
+	#t = merge()
+	#t.compareOutputs(dict1,dict2)
+	'''
+
+	#----creating the matrix---
+	#for item in features:
+		#if item in '''

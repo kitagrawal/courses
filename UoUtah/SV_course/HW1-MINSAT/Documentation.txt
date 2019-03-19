@@ -1,0 +1,55 @@
+Solve a N-queen problem using MINISAT
+
+The N-Queen problem can be converted to a propositional SAT problem.
+We will take 4-queen problem for example:
+
+Step 1: Assign a boolean variable to each cell on the 4x4 board such that Board[i][j].
+
+Step 2: Express the constraints into boolean logic
+	a) there is only 1 queen per row and column
+		SUM Board[i][j] = 1 for i = 1 to 4, j = 1
+		or SUM Board[i][j] = 1 for j = 1 to 4, i = 1
+
+		This is equivalent to (Board[1][i] -> !Board[1][j]) == (!Board[1][i] V !Board[1][j])
+
+		We get 7 clauses:
+		1. !Board[1][1] V !Board[1][2]
+		2. !Board[1][1] V !Board[1][3]
+		3. !Board[1][1] V !Board[1][4]
+		4. !Board[1][2] V !Board[1][3]
+		5. !Board[1][2] V !Board[1][4]
+		6. !Board[1][3] V !Board[1][4]
+		7. Board[1][1] V Board[1][2] V Board[1][3] V Board[1][4]
+
+	b) there is at most 1 queen per diagonal
+		We get, Board[1][1] + Board[2][2] + Board[3][3] + Board[4][4] <= 1
+
+		we get 6 clauses:
+		1. !Board[1][1] V !Board[2][2]
+		2. !Board[1][1] V !Board[3][3]
+		3. !Board[1][1] V !Board[4][4]
+		4. !Board[2][2] V !Board[3][3]
+		5. !Board[2][2] V !Board[4][4]
+		6. !Board[3][3] V !Board[4][4]
+
+We can similarly generate the other clauses. In total, we get 77 clauses for 4-queen problem
+
+Implementation idea:
+1. row and column constraints was straight-forward.
+2. For diagonal constraint, I created a dictionary with key = <variable_name> and value = [<all possible diagonals>]. After this I just combined them in the acceptable constraint format and added to the cnf file
+3. To count all the possible solutions, I did a hack to update the number of lines in the <result_file> on the fly to keep reading the output until we reach 'UNSAT'
+
+How to run the code (Assuming minisat is already installed and working correctly):
+just run the following command:
+python hw1_minisat.py <value_of_n> <cnf filename> <results filename>
+ex: python source_code.py 5 nQueen.cnf results.txt
+
+Reading and finding the output:
+1. The SAT solvers output can be found in the file <results filename>
+2. The constraints (updated with the negated SAT answers) can be found in <cnf filename>
+3. The temp.txt is a temporary file needed to hack my way to be able to read the updated <result file> on the fly.
+
+References:
+1. Michael Bentley (who pointed the condition for diagonal to <= 1 instead of == 1)
+2. Rocco Salvia (Some logical discussion regarding the diagonal constraints and about finding all possible solutions to the given n-queen problem, no code shared or disclosed or discussed)
+3. Stack Overflow (for some Python commands)

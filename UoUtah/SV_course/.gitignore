@@ -1,0 +1,5 @@
+Project/**/*.bc*
+Project/**/*.c
+Project/**/*.dot
+Project/**/*.i
+Project/**/*.bpl
